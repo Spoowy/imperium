@@ -26,7 +26,144 @@
               }
             });
         </script></nav></div><div class="container mainContainer docMainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">@imperium/auth</h1></header><article><div><span><p><a href="/imperium/docs/assets/coverage/auth/index.html"><img src="../../docs/assets/coverage/auth/coverage.svg" alt="Coverage_badge"></a> <a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/darkadept/imperium.svg" alt="Greenkeeper badge"></a>
-<a name="checkPermissions"></a></p>
+<a name="Auth"></a></p>
+<h2><a class="anchor" aria-hidden="true" id="auth"></a><a href="#auth" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Auth</h2>
+<p>Model class for authentication. Uses a Mongo <code>roles</code> collection and has an opinionated user object.</p>
+<ul>
+<li><p><a href="#Auth">Auth</a></p>
+<ul>
+<li><p><a href="#new_Auth_new">new Auth(connection, ctx)</a></p></li>
+<li><p><a href="#Auth+defaultAuth">.defaultAuth()</a></p></li>
+<li><p><a href="#Auth+buildAuthFromJwt">.buildAuthFromJwt(decodedJWT)</a></p></li>
+<li><p><a href="#Auth+serializeAuth">.serializeAuth(auth)</a></p></li>
+<li><p><a href="#Auth+logIn">.logIn(email, password)</a></p></li>
+<li><p><a href="#Auth+generateJwt">.generateJwt(payload, options)</a></p></li>
+<li><p><a href="#Auth+encryptPassword">.encryptPassword(password)</a></p></li>
+<li><p><a href="#Auth+getPermissions">.getPermissions(roles)</a></p></li>
+<li><p><a href="#Auth+createRole">.createRole(name, permissions)</a></p></li>
+<li><p><a href="#Auth+getByName">.getByName(name)</a></p></li>
+</ul></li>
+</ul>
+<hr>
+<p><a name="new_Auth_new"></a></p>
+<h3><a class="anchor" aria-hidden="true" id="new-authconnection-ctx"></a><a href="#new-authconnection-ctx" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new Auth(connection, ctx)</h3>
+<table>
+<thead>
+<tr><th>Param</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>connection</td><td><code>object</code></td><td>The Mongo connection.</td></tr>
+<tr><td>ctx</td><td><code>object</code></td><td>The Context object that this model belongs to.</td></tr>
+</tbody>
+</table>
+<p>Creates a new Auth model.</p>
+<hr>
+<p><a name="Auth+defaultAuth"></a></p>
+<h3><a class="anchor" aria-hidden="true" id="auth-defaultauth"></a><a href="#auth-defaultauth" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>auth</em>.defaultAuth()</h3>
+<p>Returns a default (blank) authentication object (for server)</p>
+<hr>
+<p><a name="Auth+buildAuthFromJwt"></a></p>
+<h3><a class="anchor" aria-hidden="true" id="auth-buildauthfromjwtdecodedjwt"></a><a href="#auth-buildauthfromjwtdecodedjwt" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>auth</em>.buildAuthFromJwt(decodedJWT)</h3>
+<table>
+<thead>
+<tr><th>Param</th></tr>
+</thead>
+<tbody>
+<tr><td>decodedJWT</td></tr>
+</tbody>
+</table>
+<p>Builds an authentication object from a decoded JWT</p>
+<p><strong>Returns</strong>: <code>Promise.&lt;Object&gt;</code> - The authentication object created from decoded JWT data.</p>
+<hr>
+<p><a name="Auth+serializeAuth"></a></p>
+<h3><a class="anchor" aria-hidden="true" id="auth-serializeauthauth"></a><a href="#auth-serializeauthauth" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>auth</em>.serializeAuth(auth)</h3>
+<table>
+<thead>
+<tr><th>Param</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>auth</td><td><code>Object</code></td><td>The object that will be serialized.</td></tr>
+</tbody>
+</table>
+<p>Takes in an authentication object and serializes it for transport to the client.</p>
+<p><strong>Returns</strong>: <code>Promise.&lt;Object&gt;</code> - The object that can be serialized.</p>
+<hr>
+<p><a name="Auth+logIn"></a></p>
+<h3><a class="anchor" aria-hidden="true" id="auth-loginemail-password"></a><a href="#auth-loginemail-password" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>auth</em>.logIn(email, password)</h3>
+<table>
+<thead>
+<tr><th>Param</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>email</td><td><code>string</code></td><td>The email to log in with.</td></tr>
+<tr><td>password</td><td><code>string</code> \</td><td><code>object</code></td><td>The password string/object to log in with.</td></tr>
+</tbody>
+</table>
+<p>Attempts the log in process.</p>
+<hr>
+<p><a name="Auth+generateJwt"></a></p>
+<h3><a class="anchor" aria-hidden="true" id="auth-generatejwtpayload-options"></a><a href="#auth-generatejwtpayload-options" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>auth</em>.generateJwt(payload, options)</h3>
+<table>
+<thead>
+<tr><th>Param</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>payload</td><td>Optional JWT claims</td></tr>
+<tr><td>options</td><td>Optional JWT options</td></tr>
+</tbody>
+</table>
+<p>Generate a JWT for the currently logged in user.</p>
+<hr>
+<p><a name="Auth+encryptPassword"></a></p>
+<h3><a class="anchor" aria-hidden="true" id="auth-encryptpasswordpassword"></a><a href="#auth-encryptpasswordpassword" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>auth</em>.encryptPassword(password)</h3>
+<table>
+<thead>
+<tr><th>Param</th></tr>
+</thead>
+<tbody>
+<tr><td>password</td></tr>
+</tbody>
+</table>
+<p>Encrypts a password</p>
+<hr>
+<p><a name="Auth+getPermissions"></a></p>
+<h3><a class="anchor" aria-hidden="true" id="auth-getpermissionsroles"></a><a href="#auth-getpermissionsroles" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>auth</em>.getPermissions(roles)</h3>
+<table>
+<thead>
+<tr><th>Param</th></tr>
+</thead>
+<tbody>
+<tr><td>roles</td></tr>
+</tbody>
+</table>
+<p>Gets the array of permissions from an array of roles</p>
+<hr>
+<p><a name="Auth+createRole"></a></p>
+<h3><a class="anchor" aria-hidden="true" id="auth-createrolename-permissions"></a><a href="#auth-createrolename-permissions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>auth</em>.createRole(name, permissions)</h3>
+<table>
+<thead>
+<tr><th>Param</th></tr>
+</thead>
+<tbody>
+<tr><td>name</td></tr>
+<tr><td>permissions</td></tr>
+</tbody>
+</table>
+<p>Create a new role</p>
+<hr>
+<p><a name="Auth+getByName"></a></p>
+<h3><a class="anchor" aria-hidden="true" id="auth-getbynamename"></a><a href="#auth-getbynamename" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><em>auth</em>.getByName(name)</h3>
+<table>
+<thead>
+<tr><th>Param</th></tr>
+</thead>
+<tbody>
+<tr><td>name</td></tr>
+</tbody>
+</table>
+<p>Gets a role by name</p>
+<hr>
+<p><a name="checkPermissions"></a></p>
 <h2><a class="anchor" aria-hidden="true" id="checkpermissionsuserpermissions-needpermissions-userid"></a><a href="#checkpermissionsuserpermissions-needpermissions-userid" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>checkPermissions(userPermissions, needPermissions, userId)</h2>
 <table>
 <thead>
@@ -40,4 +177,17 @@
 </table>
 <p>Compares an auth object against a permission or list of permissions.</p>
 <hr>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/imperium/docs/api/graphql"><span class="arrow-prev">← </span><span>Previous</span></a></div></div></div><nav class="onPageNav docOnPageNav"><ul class="toc-headings"><li><a href="#checkpermissionsuserpermissions-needpermissions-userid">checkPermissions(userPermissions, needPermissions, userId)</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/imperium/" class="nav-home"><img src="/imperium/img/imperium_w.png" alt="Imperium Framework" width="66"/></a><div><h5>Docs</h5><a href="/imperium/docs/Guides">Guides</a><a href="/imperium/docs/api/core">API Reference</a></div><div></div><div><h5>More</h5><a href="https://github.com/darkadept/imperium">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/darkadept/imperium/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2019 Mike Kornelson</section></footer></div></body></html>
+<p><a name="validatePassword"></a></p>
+<h2><a class="anchor" aria-hidden="true" id="validatepassworduser-password"></a><a href="#validatepassworduser-password" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>validatePassword(user, password)</h2>
+<table>
+<thead>
+<tr><th>Param</th></tr>
+</thead>
+<tbody>
+<tr><td>user</td></tr>
+<tr><td>password</td></tr>
+</tbody>
+</table>
+<p>Validates a user object and a password string/object.</p>
+<hr>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/imperium/docs/api/graphql"><span class="arrow-prev">← </span><span>Previous</span></a></div></div></div><nav class="onPageNav docOnPageNav"><ul class="toc-headings"><li><a href="#auth">Auth</a><ul class="toc-headings"><li><a href="#new-authconnection-ctx">new Auth(connection, ctx)</a></li><li><a href="#auth-defaultauth"><em>auth</em>.defaultAuth()</a></li><li><a href="#auth-buildauthfromjwtdecodedjwt"><em>auth</em>.buildAuthFromJwt(decodedJWT)</a></li><li><a href="#auth-serializeauthauth"><em>auth</em>.serializeAuth(auth)</a></li><li><a href="#auth-loginemail-password"><em>auth</em>.logIn(email, password)</a></li><li><a href="#auth-generatejwtpayload-options"><em>auth</em>.generateJwt(payload, options)</a></li><li><a href="#auth-encryptpasswordpassword"><em>auth</em>.encryptPassword(password)</a></li><li><a href="#auth-getpermissionsroles"><em>auth</em>.getPermissions(roles)</a></li><li><a href="#auth-createrolename-permissions"><em>auth</em>.createRole(name, permissions)</a></li><li><a href="#auth-getbynamename"><em>auth</em>.getByName(name)</a></li></ul></li><li><a href="#checkpermissionsuserpermissions-needpermissions-userid">checkPermissions(userPermissions, needPermissions, userId)</a></li><li><a href="#validatepassworduser-password">validatePassword(user, password)</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/imperium/" class="nav-home"><img src="/imperium/img/imperium_w.png" alt="Imperium Framework" width="66"/></a><div><h5>Docs</h5><a href="/imperium/docs/Guides">Guides</a><a href="/imperium/docs/api/core">API Reference</a></div><div></div><div><h5>More</h5><a href="https://github.com/darkadept/imperium">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/darkadept/imperium/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2019 Mike Kornelson</section></footer></div></body></html>
