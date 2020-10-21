@@ -4,7 +4,6 @@ import {v4} from 'uuid';
 import {Category} from './Category';
 import {User} from '../user';
 import {Comment} from './Comment';
-// import {Metadata} from './Metadata';
 
 const d = debug('imperium.examples.domain.Photo');
 

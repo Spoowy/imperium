@@ -5,7 +5,7 @@ import type {Context} from '../core/context';
 
 const d = debug('imperium.examples.server.createData');
 
-export async function createSystemUser(server: ImperiumServer<any, any>) {
+export async function createSystemUser(server: ImperiumServer<any, any>): Promise<string> {
 	const userEntityRepository = server.connectors.connections.orm.em.getRepository(entities.User);
 	const serviceEntityRepository = server.connectors.connections.orm.em.getRepository(entities.Services);
 	const systemUser = await userEntityRepository.findOne({name: 'SYSTEM'});

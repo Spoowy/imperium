@@ -4,7 +4,6 @@ import type {ImperiumServer} from '@imperium/server';
 import type {IResolvers} from '@imperium/graphql-server';
 import type {Photo} from '@imperium/example-domain';
 import type {Context} from '../core/context';
-import {getSelectionFields} from '../lib/getSelectionFields';
 
 const d = debug('imperium.examples.server.authorizationModule.resolvers');
 const dd = (obj: any) => d(inspect(obj, false, null, true));

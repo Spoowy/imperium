@@ -2,6 +2,7 @@
 	This is the main export from the domain package. This function creates a new domain context
 	and should be called on every request/operation.
  */
+import debug from 'debug';
 import type {AuthenticatedUser} from '@imperium/connector';
 import {ImperiumBaseContext} from '@imperium/connector';
 import {Authorization} from '../lib/Authorization';
@@ -12,9 +13,14 @@ import {entities} from './entities';
 import {services} from './services';
 import {SecureModel} from '../other';
 
+const d = debug('imperium.examples.domain.createDomain');
+
 export async function createDomain(connectors: DomainConnectors, authenticatedUser?: AuthenticatedUser) {
-	// const authorization = new Authorization(authenticatedUser?.auth?.id);
-	const authorization = new Authorization<AppAbilityTuple, User>(authenticatedUser?.auth?.id);
+	d('*************************************************************');
+	d(`Authenticated user: ${authenticatedUser?.auth?.id}`);
+
+	// Create authorization instance
+	const authorization = new Authorization<AppAbilityTuple, User>(authenticatedUser);
 
 	// Create a new, blank Entity Manager
 	const entityManager = connectors.connections.orm.em.fork(true, true);
@@ -23,9 +29,8 @@ export async function createDomain(connectors: DomainConnectors, authenticatedUs
 	const ctx = {
 		...ImperiumBaseContext(),
 		...entities,
-		...services(entityManager, connectors, authenticatedUser),
+		...services(entityManager, connectors, authorization),
 		SecureModel,
-		// Authorization: authorization,
 		// We also tack on a reference to the connectors and the current entity manager.
 		connectors,
 		entityManager,

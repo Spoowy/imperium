@@ -22,12 +22,12 @@ export function authMiddleware(config: AuthMiddlewareConfig): RequestHandler {
 		(req, res, next) => {
 			// @ts-ignore
 			if (req.user) {
-				d('JWT present and valid');
+				// d('JWT present and valid');
 				// @ts-ignore
 				req.auth = {id: req.user.id} as Auth;
 				next();
 			} else {
-				d('JWT not present');
+				// d('JWT not present');
 				// @ts-ignore
 				req.auth = null;
 				next();
