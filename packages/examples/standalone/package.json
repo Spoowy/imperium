@@ -1,6 +1,6 @@
 {
   "name": "@imperium/example-standalone",
-  "version": "4.6.0",
+  "version": "5.1.2",
   "private": true,
   "description": "Imperium standalone example project",
   "repository": {
@@ -26,14 +26,14 @@
     }
   },
   "dependencies": {
-    "@imperium/connector": "^4.6.0",
-    "@imperium/example-domain": "^4.6.0",
+    "@imperium/connector": "^5.0.0",
+    "@imperium/example-domain": "^5.1.2",
     "@mikro-orm/cli": "^4.0.2",
     "@mikro-orm/core": "^4.0.2",
     "@mikro-orm/postgresql": "^4.0.2",
-    "@thx/log": "^11.1.0",
-    "@thx/sharedcache": "^11.0.2",
-    "apollo-server-express": "^2.16.1",
+    "@thx/log": "^13.0.0",
+    "@thx/sharedcache": "^13.0.0",
+    "apollo-server-express": "^2.19.0",
     "debug": "^4.1.1",
     "dotenv": "^8.1.0",
     "lodash": "^4.17.15",
@@ -44,7 +44,7 @@
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/register": "^7.9.0",
-    "@imperium/babel-preset-imperium": "^4.5.1"
+    "@imperium/babel-preset-imperium": "^5.1.2"
   },
   "engines": {
     "node": ">=12"
